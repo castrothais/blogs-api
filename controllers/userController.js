@@ -1,5 +1,5 @@
-const { createUser } = require('../services/userServices');
-const { created } = require('../utils/statusCode');
+const { createUser, userLogin } = require('../services/userServices');
+const { created, sucess } = require('../utils/statusCode');
 
 const userCreatedController = async (req, res, next) => {
  try {
@@ -11,4 +11,14 @@ const userCreatedController = async (req, res, next) => {
  }
 };
 
-module.exports = { userCreatedController };
+const loginController = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const loginUser = await userLogin(email, password);
+    return res.status(sucess).json({ token: loginUser });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { userCreatedController, loginController };

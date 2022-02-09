@@ -18,4 +18,20 @@ const userSchema = Joi.object({
   image: Joi.string(),
 });
 
-module.exports = { userSchema };
+const loginSchema = Joi.object({
+  email: Joi.string().email().empty().required()
+    .messages({
+    'string.empty': '"email" is not allowed to be empty',
+    'any.required': '"email" is required',
+
+  }),
+  password: Joi.string().min(6).empty().required()
+  .messages({ 
+    'string.min': '"password" length must be 6 characters long',
+    'any.required': '"password" is required',
+    'string.empty': '"password" is not allowed to be empty',
+  }),
+  image: Joi.string(),
+});
+
+module.exports = { userSchema, loginSchema };

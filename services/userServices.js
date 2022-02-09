@@ -1,5 +1,5 @@
 const { Users } = require('../models'); // 
-const { userSchema } = require('../schemas/userSchemas');
+const { userSchema, loginSchema } = require('../schemas/userSchemas');
 const errorConstructor = require('../utils/errorConstructor');
 const { badRequest, conflict } = require('../utils/statusCode');
 const { genToken } = require('./authServices');
@@ -23,4 +23,21 @@ const createUser = async (displayName, email, password, image) => {
   return token;
 };
 
-module.exports = { createUser };
+const userLogin = async (email, password) => {
+   // VALIDAÇÕES DO SCHEMA
+  const { error } = loginSchema.validate({ email, password });
+
+  if (error) {
+    throw errorConstructor(badRequest, { message: error.message });
+  }
+
+  // VERIFICA SE O USER EXISTE NO BANCO DE DADOS
+  const findUser = await Users.findOne({ where: { email, password } });
+  if (!findUser) throw errorConstructor(badRequest, { message: 'Invalid fields' });
+
+  const { password: _password, ...userWithoutPassword } = findUser.dataValues;
+  const token = genToken(userWithoutPassword);
+  return token;
+};
+
+module.exports = { createUser, userLogin };
