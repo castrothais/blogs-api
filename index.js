@@ -1,5 +1,6 @@
 const express = require('express');
-const { userCreatedController, loginController } = require('./controllers/userController');
+const { userCreatedController, loginController, 
+  allUsersController } = require('./controllers/userController');
 const auth = require('./middlewares/auth');
 const { error } = require('./middlewares/errorMiddlewares');
 
@@ -7,9 +8,11 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/user', auth, userCreatedController);
+app.post('/user', userCreatedController);
 
-app.post('/login', auth, loginController);
+app.post('/login', loginController);
+
+app.get('/user', auth, allUsersController);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
 

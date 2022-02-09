@@ -40,4 +40,9 @@ const userLogin = async (email, password) => {
   return token;
 };
 
-module.exports = { createUser, userLogin };
+const usersAllList = async () => {
+  const usersList = await Users.findAll();
+  return usersList;
+};
+
+module.exports = { createUser, userLogin, usersAllList };
