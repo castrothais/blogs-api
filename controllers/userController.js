@@ -1,4 +1,4 @@
-const { createUser, userLogin, usersAllList } = require('../services/userServices');
+const { createUser, userLogin, usersAllList, userGetById } = require('../services/userServices');
 const { created, sucess } = require('../utils/statusCode');
 
 const userCreatedController = async (req, res, next) => {
@@ -30,4 +30,14 @@ const allUsersController = async (_req, res, next) => {
   }
 };
 
-module.exports = { userCreatedController, loginController, allUsersController };
+const UserByIdController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userById = await userGetById(id);
+    return res.status(sucess).json(userById);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { userCreatedController, loginController, allUsersController, UserByIdController };

@@ -1,7 +1,7 @@
 const { Users } = require('../models'); // 
 const { userSchema, loginSchema } = require('../schemas/userSchemas');
 const errorConstructor = require('../utils/errorConstructor');
-const { badRequest, conflict } = require('../utils/statusCode');
+const { badRequest, conflict, notFound } = require('../utils/statusCode');
 const { genToken } = require('./authServices');
 
 const createUser = async (displayName, email, password, image) => {
@@ -45,4 +45,13 @@ const usersAllList = async () => {
   return usersList;
 };
 
-module.exports = { createUser, userLogin, usersAllList };
+const userGetById = async (id) => {
+  const userFindId = await Users.findOne({ where: { id } });
+  
+  if (!userFindId) {
+    throw errorConstructor(notFound, { message: 'User does not exist' });
+  }
+  return userFindId;
+};
+
+module.exports = { createUser, userLogin, usersAllList, userGetById };

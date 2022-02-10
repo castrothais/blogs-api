@@ -1,6 +1,7 @@
 const express = require('express');
 const { userCreatedController, loginController, 
-  allUsersController } = require('./controllers/userController');
+  allUsersController, 
+  UserByIdController } = require('./controllers/userController');
 const auth = require('./middlewares/auth');
 const { error } = require('./middlewares/errorMiddlewares');
 
@@ -13,6 +14,8 @@ app.post('/user', userCreatedController);
 app.post('/login', loginController);
 
 app.get('/user', auth, allUsersController);
+
+app.get('/user/:id', auth, UserByIdController);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
 
