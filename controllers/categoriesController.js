@@ -1,5 +1,5 @@
-const { createCategorie } = require('../services/categorieServices');
-const { created } = require('../utils/statusCode');
+const { createCategorie, categoriesAllList } = require('../services/categorieServices');
+const { created, sucess } = require('../utils/statusCode');
 
 const categorieCreatedController = async (req, res, next) => {
   try {
@@ -11,4 +11,13 @@ const categorieCreatedController = async (req, res, next) => {
   }
 };
 
-module.exports = categorieCreatedController;
+const allCategoriesController = async (_req, res, next) => {
+  try {
+    const allCategories = await categoriesAllList();
+    return res.status(sucess).json(allCategories);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { categorieCreatedController, allCategoriesController };
