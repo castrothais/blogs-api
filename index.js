@@ -1,4 +1,5 @@
 const express = require('express');
+const { blogPostController } = require('./controllers/blogPostController');
 const { allCategoriesController, 
   categorieCreatedController } = require('./controllers/categoriesController');
 const { userCreatedController, loginController, 
@@ -20,6 +21,8 @@ app.get('/user/:id', auth, UserByIdController);
 // CATEGORIES
 app.post('/categories', auth, categorieCreatedController);
 app.get('/categories', auth, allCategoriesController);
+
+app.post('/post', auth, blogPostController);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
 
