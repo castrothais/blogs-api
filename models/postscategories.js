@@ -1,5 +1,5 @@
-const PostsCategory = (sequelize) => {
-  const postCategory = sequelize.define('PostsCategory', {}, {
+const PostCategory = (sequelize) => {
+  const postCategory = sequelize.define('PostCategory', {}, {
     timestamps: false, tableName: 'PostsCategories' });
 
     postCategory.associate = (models) => {
@@ -19,4 +19,4 @@ const PostsCategory = (sequelize) => {
     return postCategory;
 };
 
-module.exports = PostsCategory;
+module.exports = PostCategory;

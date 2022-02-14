@@ -1,5 +1,5 @@
+/* const { postSchema } = require('../schemas/blogPostSchema');
 const { BlogPosts, Categories } = require('../models');
-const { postSchema } = require('../schemas/blogPostSchema');
 const errorConstructor = require('../utils/errorConstructor');
 const { badRequest } = require('../utils/statusCode');
 
@@ -11,12 +11,11 @@ const verifyCategory = async (category) => {
 const blogPostsCategories = async (req, title, content, categoryIds) => {
  // VALIDAÇÕES DO SCHEMA CATEGORIES
  const { error } = postSchema.validate({ title, content, categoryIds });
-console.log(error);
 
  if (error) {
-  throw errorConstructor(badRequest, { message: error.message });
-}
-  const { id } = req.user;
+   throw errorConstructor(badRequest, { message: error.message });
+ }
+ const { id } = req.user;
 
   const createBlogPost = await BlogPosts.create({ title, content, categoryIds, userId: id });
   const blog = { id: createBlogPost.id,
@@ -31,4 +30,4 @@ console.log(error);
   return blog;
 };
 
-module.exports = { blogPostsCategories };
+module.exports = { blogPostsCategories }; */
