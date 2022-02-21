@@ -1,31 +1,16 @@
 const { BlogPosts, Categories, Users } = require('../models');
-const { validatePost } = require('../schemas/blogPostSchema');
+const { blogPosts } = require('../services/postBlogServices');
+const { created } = require('../utils/statusCode');
 
-const verifyCategory = async (category) => {
-  const categories = await Categories.findAll({ where: { id: category } });
- 
-  return categories.length === category.length;
-};
-
-const blogPosts = async (req, res) => {
-  const { title, content, categoryIds } = req.body;
-  const { id: userId } = req.user;
-
+const blogPostsController = async (req, res, next) => {
   try {
-    const { error } = validatePost(title, content, categoryIds);
-    if (error) return res.status(400).json({ message: error.message });
-    const verifyCategorie = await verifyCategory(categoryIds);
+    const { title, content, categoryIds } = req.body;
+    const { id: userId } = req.user;
 
-    if (verifyCategorie === false) {
-      console.log(verifyCategorie, 'ENTROU NO VERIFY');
-      return res.status(400).json({ message: '"categoryIds" not found' }); 
-    }
-  
-  const createBlogPost = await BlogPosts.create({ title, content, userId });
-
-    return res.status(201).json(createBlogPost);
+    const newBlogPost = await blogPosts(title, content, categoryIds, userId);
+    return res.status(created).json(newBlogPost);
   } catch (err) {
-    return res.status(400).json(err);
+    next(err);
   }
 }; 
 
@@ -43,4 +28,4 @@ const findAllPosts = async (_req, res) => {
   }
 };
 
-module.exports = { blogPosts, findAllPosts };
+module.exports = { blogPostsController, findAllPosts };
