@@ -1,7 +1,7 @@
 const { BlogPosts, Categories, Users } = require('../models');
 const { validatePost } = require('../schemas/blogPostSchema');
 const errorConstructor = require('../utils/errorConstructor');
-const { badRequest } = require('../utils/statusCode');
+const { badRequest, notFound } = require('../utils/statusCode');
 
 const verifyCategory = async (category) => {
   const categories = await Categories.findAll({ where: { id: category } });
@@ -33,4 +33,18 @@ const findAllPostCategories = async () => {
   return findAllPost;
 };
 
-module.exports = { blogPosts, findAllPostCategories };
+const findBlogPostId = async (id) => {
+  const findPost = await BlogPosts.findOne({
+    where: { id },
+    include: [
+      { model: Categories, as: 'categories', through: { attributes: [] } },
+      { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+    ],
+  });
+
+  if (!findPost) throw errorConstructor(notFound, { message: 'Post does not exist' });
+
+  return findPost;
+};
+
+module.exports = { blogPosts, findAllPostCategories, findBlogPostId };
