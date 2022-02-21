@@ -1,6 +1,5 @@
-const { BlogPosts, Categories, Users } = require('../models');
-const { blogPosts } = require('../services/postBlogServices');
-const { created } = require('../utils/statusCode');
+const { blogPosts, findAllPostCategories } = require('../services/postBlogServices');
+const { created, sucess } = require('../utils/statusCode');
 
 const blogPostsController = async (req, res, next) => {
   try {
@@ -14,17 +13,12 @@ const blogPostsController = async (req, res, next) => {
   }
 }; 
 
-const findAllPosts = async (_req, res) => {
+const findAllPosts = async (_req, res, next) => {
   try {
-    const findAllPostCategories = await BlogPosts.findAll({
-      include: [
-        { model: Categories, as: 'categories' },
-        { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-      ],
-    });
-    return res.status(200).json(findAllPostCategories);
+    const findPostAll = await findAllPostCategories();
+    return res.status(sucess).json(findPostAll);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+   next(error);
   }
 };
 
