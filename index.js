@@ -6,7 +6,7 @@ const { allCategoriesController,
   categorieCreatedController } = require('./controllers/categoriesController');
 const { userCreatedController, loginController, 
   allUsersController, 
-  UserByIdController } = require('./controllers/userController');
+  UserByIdController, deleteUserMe } = require('./controllers/userController');
 const auth = require('./middlewares/auth');
 const { error } = require('./middlewares/errorMiddlewares');
 
@@ -19,11 +19,13 @@ app.post('/user', userCreatedController);
 app.post('/login', loginController);
 app.get('/user', auth, allUsersController);
 app.get('/user/:id', auth, UserByIdController);
+app.delete('/user/me', auth, deleteUserMe);
 
 // CATEGORIES
 app.post('/categories', auth, categorieCreatedController);
 app.get('/categories', auth, allCategoriesController);
 
+// BLOGPOST
 app.post('/post', auth, blogPostsController);
 app.get('/post', auth, findAllPosts);
 app.get('/post/:id', auth, blogPostFindId);

@@ -1,4 +1,4 @@
-const { Users } = require('../models'); // 
+const { Users } = require('../models'); // Index
 const { userSchema, loginSchema } = require('../schemas/userSchemas');
 const errorConstructor = require('../utils/errorConstructor');
 const { badRequest, conflict, notFound } = require('../utils/statusCode');
@@ -54,4 +54,12 @@ const userGetById = async (id) => {
   return userFindId;
 };
 
-module.exports = { createUser, userLogin, usersAllList, userGetById };
+const deleteUser = async (email) => {
+  await Users.destroy({
+    where: { email },
+  });
+
+  return null;
+};
+
+module.exports = { createUser, userLogin, usersAllList, userGetById, deleteUser };
