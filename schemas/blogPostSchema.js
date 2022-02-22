@@ -18,4 +18,13 @@ const validatePost = (title, content, categoryIds) => {
   return postSchema.validate({ title, content, categoryIds });
 };
 
-module.exports = { validatePost };
+const updateSchema = Joi.object({
+  title: Joi.string().required().messages({
+  'any.required': '"title" is required',
+}),
+  content: Joi.string().required().messages({
+  'any.required': '"content" is required',
+}),
+});
+
+module.exports = { validatePost, updateSchema };

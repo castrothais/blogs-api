@@ -1,5 +1,6 @@
 const { blogPosts, findAllPostCategories, 
-  findBlogPostId } = require('../services/postBlogServices');
+  findBlogPostId, 
+  updatePost } = require('../services/postBlogServices');
 const { created, sucess } = require('../utils/statusCode');
 
 const blogPostsController = async (req, res, next) => {
@@ -33,4 +34,18 @@ const blogPostFindId = async (req, res, next) => {
   }
 };
 
-module.exports = { blogPostsController, findAllPosts, blogPostFindId };
+const updateBlogPost = async (req, res, next) => {
+  try {
+    const { title, content, categoryIds } = req.body;
+    const { id } = req.params;
+    const { email } = req.user;
+    
+    const data = { id, title, content, categoryIds, email };
+    const post = await updatePost(data);
+    return res.status(sucess).json(post);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { blogPostsController, findAllPosts, blogPostFindId, updateBlogPost };
