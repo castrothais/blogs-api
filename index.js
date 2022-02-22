@@ -1,7 +1,8 @@
 const express = require('express');
 const { findAllPosts, blogPostsController,
   blogPostFindId, 
-  updateBlogPost } = require('./controllers/blogPostController');
+  updateBlogPost, 
+  deletePostById } = require('./controllers/blogPostController');
 const { allCategoriesController, 
   categorieCreatedController } = require('./controllers/categoriesController');
 const { userCreatedController, loginController, 
@@ -30,6 +31,7 @@ app.post('/post', auth, blogPostsController);
 app.get('/post', auth, findAllPosts);
 app.get('/post/:id', auth, blogPostFindId);
 app.put('/post/:id', auth, updateBlogPost);
+app.delete('/post/:id', auth, deletePostById);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
 

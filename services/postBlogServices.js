@@ -81,4 +81,25 @@ const updatePost = async (data) => {
   return post;
 };
 
-module.exports = { blogPosts, findAllPostCategories, findBlogPostId, updatePost };
+const deletePostId = async (id, email) => {
+  const findPost = await BlogPosts.findByPk(id);
+  if (!findPost) throw errorConstructor(notFound, { message: 'Post does not exist' });
+
+  const user = await Users.findOne({ where: { email } });
+
+  const { dataValues: { userId: UserIdInPost } } = findPost;
+  const { dataValues: { id: UserIdInUser } } = user;
+
+  // Se não for o dono do blogpost o resultado retornado deverá ser
+  if (UserIdInPost !== UserIdInUser) {
+    throw errorConstructor(unauthorized, { message: 'Unauthorized user' });
+  }
+
+  await BlogPosts.destroy({
+    where: { id },
+  });
+
+  return null;
+};
+
+module.exports = { blogPosts, findAllPostCategories, findBlogPostId, updatePost, deletePostId };
