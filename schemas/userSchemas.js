@@ -34,4 +34,5 @@ const loginSchema = Joi.object({
   image: Joi.string(),
 });
 
+// teste
 module.exports = { userSchema, loginSchema };
